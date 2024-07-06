@@ -1,5 +1,8 @@
 #module
+import os
 from time import sleep
+import csv
+from openpyxl import Workbook
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -89,3 +92,42 @@ def crawl_ixigua(id):
                 pass
     return videos
 # print(crawl_ixigua('2208284108405639'))
+# def crawl_reddit(user):
+#     url = f'https://www.reddit.com/user/{user}/submitted/'
+#     driver = webdriver.Chrome(options=chrome_options)
+#     driver.get(url)
+#
+def csv_export(array):
+    for num, i in enumerate(array):
+        if len(i) == 1:
+            #link
+            pass
+        else:
+            keys = [str(j) for j in i.keys()]
+            values = [str(j) for j in i.values()]
+            f = open('tempcsv.csv', 'w', encoding='utf-8')
+            f.write(','.join(keys)+'\n')
+            f.write(','.join(values))
+            f.close()
+            # os.rename('tempcsv.csv', f'{num}.xlsx')
+            with open('tempcsv.csv', 'r') as csv_file:
+                csv_reader = csv.reader(csv_file)
+                workbook = Workbook()
+                worksheet = workbook.active
+                for row in csv_reader:
+                    worksheet.append(row)
+                workbook.save(f'data{num}.xlsx') #co gi em tuy chinh cai ten nha, tai a ko biet cai code e can de ten nhu nao
+# csv_export(
+#     [
+#         {
+#             1:2,
+#             2:3,
+#             3:4,
+#             4:5
+#         },
+#         {
+#             3:4,
+#             5:6
+#         }
+#     ]
+# )
